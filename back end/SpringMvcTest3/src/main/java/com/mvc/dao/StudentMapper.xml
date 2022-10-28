@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mvc.dao.StudentMapper">
+
+<!--    增-->
+    <insert id="addStudent" parameterType="Student">
+        insert into student(name,sex,age) value (#{name},#{sex},#{age});
+    </insert>
+
+<!--    全查-->
+    <select id="queryAllStudent" resultType="Student">
+        select * from student
+    </select>
+
+<!--    删-->
+    <delete id="deleteStudentById" parameterType="Student">
+        delete from student where id=#{id}
+    </delete>
+
+<!--    改-->
+    <update id="updateStudent" parameterType="Student">
+        update student set name=#{name},sex=#{sex},age=#{age} where id=#{id}
+    </update>
+
+<!--    查-->
+    <select id="queryStudentById" resultType="Student">
+        select * from student where id=#{id}
+    </select>
+<!--    select * from student where name=#{name}-->
+    <select id="queryStudentAny" parameterType="String" resultType="Student">
+        select * from student s
+        where 1 = 1
+        <if test="sex != null">
+            And sex = #{sex}
+        </if>
+        <if test="age != -1">
+            And age = #{age}
+        </if>
+
+        <if test="id != 0">
+            AND s.id = #{id}
+        </if>
+        <if test="name neq null and name neq ''">
+            And s.name LIKE #{name}
+        </if>
+        ORDER BY s.id
+    </select>
+
+</mapper>
